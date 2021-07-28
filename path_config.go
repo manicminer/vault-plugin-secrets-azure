@@ -22,6 +22,7 @@ type azureConfig struct {
 	TenantID       string `json:"tenant_id"`
 	ClientID       string `json:"client_id"`
 	ClientSecret   string `json:"client_secret"`
+	ObjectID       string `json:"object_id"`
 	Environment    string `json:"environment"`
 	PasswordPolicy string `json:"password_policy"`
 }
@@ -54,6 +55,11 @@ func pathConfig(b *azureSecretBackend) *framework.Path {
 				Type: framework.TypeString,
 				Description: `The OAuth2 client secret to connect to Azure.
 				This value can also be provided with the AZURE_CLIENT_SECRET environment variable.`,
+			},
+			"object_id": &framework.FieldSchema{
+				Type: framework.TypeString,
+				Description: `The Object ID of the application for the administrator user Vault uses for managing Azure.
+				This value can also be provided with the AZURE_CLIENT_ID environment variable.`,
 			},
 			"password_policy": &framework.FieldSchema{
 				Type:        framework.TypeString,
@@ -110,6 +116,10 @@ func (b *azureSecretBackend) pathConfigWrite(ctx context.Context, req *logical.R
 
 	if clientSecret, ok := data.GetOk("client_secret"); ok {
 		config.ClientSecret = clientSecret.(string)
+	}
+
+	if objectID, ok := data.GetOk("object_id"); ok {
+		config.ObjectID = objectID.(string)
 	}
 
 	config.PasswordPolicy = data.Get("password_policy").(string)

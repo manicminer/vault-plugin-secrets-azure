@@ -339,6 +339,7 @@ type clientSettings struct {
 	TenantID       string
 	ClientID       string
 	ClientSecret   string
+	ObjectID       string
 	Environment    azure.Environment
 	PluginEnv      *logical.PluginEnvironment
 }
@@ -359,6 +360,7 @@ func (b *azureSecretBackend) getClientSettings(ctx context.Context, config *azur
 
 	settings.ClientID = firstAvailable(os.Getenv("AZURE_CLIENT_ID"), config.ClientID)
 	settings.ClientSecret = firstAvailable(os.Getenv("AZURE_CLIENT_SECRET"), config.ClientSecret)
+	settings.ObjectID = firstAvailable(os.Getenv("AZURE_OBJECT_ID"), config.ObjectID)
 
 	settings.SubscriptionID = firstAvailable(os.Getenv("AZURE_SUBSCRIPTION_ID"), config.SubscriptionID)
 	if settings.SubscriptionID == "" {

@@ -45,9 +45,9 @@ func (b *azureSecretBackend) pathRotateRootCredentialsUpdate(ctx context.Context
 		return nil, err
 	}
 
-	duration := (time.Hour * 24 * 30) * 6
+	duration := (time.Hour * 24) * 6
 
-	_, password, err := client.addAppPassword(ctx, b.settings.ClientID, duration)
+	_, password, err := client.addAppPassword(ctx, b.settings.ObjectID, duration)
 	if err != nil {
 		return nil, err
 	}
